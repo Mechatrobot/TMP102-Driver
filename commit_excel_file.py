@@ -20,7 +20,7 @@ for commit in commits :
    commit_date = commit.committed_datetime.astimezone(timezonedate)#convert the timezone to UTC.
    commit_data.append({'SHA' : commit.hexsha,
                        'Commiter' : commit.committer.name,
-                       'Date' : commit_date.strftime('%Y-%m-%d %H:%M:%S %Z%z'), #string format
+                       'Date' : commit_date.strftime('%Y-%m-%d %H:%M:%S'), #string format
                        'Email': commit.committer.email
                       })
 
