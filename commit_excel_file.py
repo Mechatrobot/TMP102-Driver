@@ -18,10 +18,11 @@ commit_data = []
 for commit in commits :
    timezonedate = pytz.timezone("Africa/Casablanca")
    commit_date = commit.committed_datetime.astimezone(timezonedate)#convert the timezone to UTC.
-   commit_data.append({'SHA' : commit.hexsha,
+   commit_data.append({
                        'Commiter' : commit.author.name,
-                       'Date' : commit_date.strftime('%Y-%m-%d %H:%M:%S'), #string format
                        'Email': commit.author.email,
+                       'SHA' : commit.hexsha,
+                       'Date of committement' : commit_date.strftime('%Y-%m-%d %H:%M:%S'), #string format
                        'Message' : commit.message.strip()
                       })
 
