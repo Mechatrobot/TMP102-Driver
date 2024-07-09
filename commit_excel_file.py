@@ -21,7 +21,8 @@ for commit in commits :
    commit_data.append({'SHA' : commit.hexsha,
                        'Commiter' : commit.author.name,
                        'Date' : commit_date.strftime('%Y-%m-%d %H:%M:%S'), #string format
-                       'Email': commit.author.email
+                       'Email': commit.author.email,
+                       'Message' : commit.message.strip()
                       })
 
 data_frame = pd.DataFrame(commit_data) #convert commit data to DataFrame to put it on excel
