@@ -19,9 +19,9 @@ for commit in commits :
    timezonedate = pytz.timezone("Africa/Casablanca")
    commit_date = commit.committed_datetime.astimezone(timezonedate)#convert the timezone to UTC.
    commit_data.append({'SHA' : commit.hexsha,
-                       'Commiter' : commit.committer.name,
+                       'Commiter' : commit.author.name,
                        'Date' : commit_date.strftime('%Y-%m-%d %H:%M:%S'), #string format
-                       'Email': commit.committer.email
+                       'Email': commit.author.email
                       })
 
 data_frame = pd.DataFrame(commit_data) #convert commit data to DataFrame to put it on excel
