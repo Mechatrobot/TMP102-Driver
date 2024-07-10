@@ -6,7 +6,6 @@ on :
        - main 
 jobs : 
   update_commit : 
-    if: "!contains(github.event.head_commit.message))" 
     runs-on : ubuntu-latest
     defaults : 
        run : 
