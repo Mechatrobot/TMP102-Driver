@@ -12,7 +12,7 @@ jobs :
     defaults : 
        run : 
          shell : bash 
-         working-directory : ./TMP102-Driver
+         working-directory : ./file_test
     steps : 
        - name : checking the code
          uses : actions/checkout@v2
