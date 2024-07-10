@@ -9,11 +9,6 @@ on :
 jobs : 
   update_commit : 
     runs-on : ubuntu-latest
-    defaults : 
-       run : 
-         shell : bash 
-         working-directory : ./file_test
-       
     steps : 
        - name : checking the code
          uses : actions/checkout@v2
