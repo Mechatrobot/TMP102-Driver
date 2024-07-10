@@ -5,7 +5,7 @@ from datetime import datetime
 import pytz
 
 url_repo = "https://github.com/Mechatrobot/TMP102-Driver"
-local_file = "C:/Users/se93297/Desktop/TMP102-Driver-main"
+local_file = "./TMP102-Driver-main"
 
 if not os.path.exists(local_file) :
   Repo.clone_from(url_repo,local_file);       #clone the repo into the local if it doesn't exist.
