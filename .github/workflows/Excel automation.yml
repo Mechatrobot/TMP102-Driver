@@ -1,10 +1,12 @@
 name : Excel file automation with python
 
 on : 
-  schedule : 
-    - cron : '*/10 * * * *'
+   push : 
+      branches : 
+       - main 
 jobs : 
   update_commit : 
+    if: "!contains(github.event.head_commit.message))" 
     runs-on : ubuntu-latest
     defaults : 
        run : 
