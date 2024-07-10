@@ -27,9 +27,9 @@ jobs :
        - name : automation
          run: python auto.py  
        - name : excel file artifacts
-         uses : actions/upload-artifact@v3
+         uses : actions/upload-artifact@v4
          with:
-            name: commits-history
+            name: commits_list
             path: ./TMP102-Driver/file_test/commits_list.xlsx
             
 
