@@ -2,6 +2,8 @@ name : Excel file automation with python
 
 on : 
    push : 
+      paths :
+       - 'file_test/**'
       branches : 
        - main 
 jobs : 
