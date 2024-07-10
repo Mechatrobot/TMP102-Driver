@@ -30,7 +30,7 @@ jobs :
          uses : actions/upload-artifact@v3
          with:
             name: commits-history
-            path: file_test
+            path: file_name/commit.xlsx
             
 
    
