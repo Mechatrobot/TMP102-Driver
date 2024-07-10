@@ -27,7 +27,7 @@ jobs :
        - name : automation
          run: python auto.py  
        - name : excel file artifacts
-         uses : actions/upload-artifact@v4
+         uses : actions/upload-artifact@v3
          with:
             name: commits-history
             path: ./file_test/commits_history.xlsx
