@@ -12,7 +12,7 @@ jobs :
     defaults : 
        run : 
          shell : bash 
-         working-directory : ./file_test
+         working-directory : ./TMP102-Driver
     steps : 
        - name : checking the code
          uses : actions/checkout@v2
@@ -30,7 +30,7 @@ jobs :
          uses : actions/upload-artifact@v3
          with:
             name: commits-history
-            path: commits_list.xlsx
+            path: ./TMP102-Driver/file_test/commits_list.xlsx
             
 
    
