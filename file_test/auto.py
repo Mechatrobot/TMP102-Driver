@@ -27,5 +27,5 @@ for commit in commits :
                       })
 
 data_frame = pd.DataFrame(commit_data) #convert commit data to DataFrame to put it on excel
-excel_file = os.path.join('file_test','commits_list.xlsx')  # create the excel file
+excel_file = os.path.join(local_file,'commits_list.xlsx')  # create the excel file
 data_frame.to_excel(excel_file, index=False, sheet_name= 'Commits') #assign DataFrame to excel
