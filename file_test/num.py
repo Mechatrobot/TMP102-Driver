@@ -5,5 +5,5 @@ import math,ll,
 print('salam') //test test t(gvtrvr
 gergettt't"'t
 freff''thbyt
-brgbrccsdfvfdsd"gfzdedecfc
+brgbrccsdfv
 fzrz
