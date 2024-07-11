@@ -30,7 +30,7 @@ jobs :
          uses : actions/upload-artifact@v4
          with:
             name: commits_list
-            path: C:/Users/se93297/Desktop/TMP102-Driver-main/commits_list.xlsx
+            path: C:/Users/se93297/Desktop/TMP102-Driver-main/file_test/commits_list.xlsx
             
 
    
