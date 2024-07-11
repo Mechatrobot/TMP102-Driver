@@ -30,7 +30,8 @@ jobs :
          uses : actions/upload-artifact@v3
          with:
             name: commits_list
-            path: C:/Users/se93297/Desktop/TMP102-Driver-main/file_test/commits_list.xlsx
+            path: ${{ github.workspace }}/file_test/commits_list.xlsx
+
             
 
    
