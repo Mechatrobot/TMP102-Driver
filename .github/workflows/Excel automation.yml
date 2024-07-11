@@ -30,7 +30,7 @@ jobs :
          uses : actions/upload-artifact@v3
          with:
             name: commits_list
-            path: ${{ github.workspace }}/file_test/commits_list.xlsx
+            path: ${{ github.workspace }}/commits_list.xlsx
 
             
 
