@@ -25,7 +25,9 @@ for commit in commits :
                        'Date of committement' : commit_date.strftime('%Y-%m-%d %H:%M:%S'), #string format
                        'Message' : commit.message.strip()
                       })
-
+output_dir = "file_test"
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 data_frame = pd.DataFrame(commit_data) #convert commit data to DataFrame to put it on excel
-excel_file = os.path.join(local_file,'commits_list.xlsx')  # create the excel file
+excel_file = os.path.join(output_dir,'commits_list.xlsx')  # create the excel file
 data_frame.to_excel(excel_file, index=False, sheet_name= 'Commits') #assign DataFrame to excel
