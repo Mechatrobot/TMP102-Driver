@@ -6,5 +6,5 @@ print('salam') //test test t(g
 gergettt't"'t
 freff''thbyt
 brgbrccsdfvfdsd"gfzdede
-fzrzffrfnn;;n;reervjripov
+fzrzffrfnn;;n;reervjripovg'g
 frrrtergf
