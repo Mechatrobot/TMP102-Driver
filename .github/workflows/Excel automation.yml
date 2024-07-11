@@ -9,10 +9,6 @@ on :
 jobs : 
   update_commit :
     runs-on : ubuntu-latest
-    defaults : 
-       run : 
-         shell : bash 
-         working-directory : ./file_test
     steps : 
        - name : checking the code
          uses : actions/checkout@v2
@@ -25,7 +21,7 @@ jobs :
           python -m pip install --upgrade pip
           pip install gitpython openpyxl datetime pytz pandas
        - name : automation
-         run: python auto.py  
+         run: python TMP102-Driver/file_test/auto.py  
        - name : excel file artifacts
          uses : actions/upload-artifact@v3
          with:
