@@ -4,4 +4,3 @@ import opencv as cv
 import math,ll,
 print('salam') 
 gergettt't"'t
-fref
