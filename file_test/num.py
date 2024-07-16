@@ -3,4 +3,4 @@ import pandas as np
 import opencv as cv
 import math,ll,
 print('salam') 
-gegtgr
+gegtgrgtrg
