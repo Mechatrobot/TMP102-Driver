@@ -1,4 +1,4 @@
 #define CST
 #define RX
-fre
 printf("test/n/r");
+HAL_I2C_Read()
