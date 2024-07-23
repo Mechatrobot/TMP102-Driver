@@ -4,7 +4,6 @@ import os
 from datetime import datetime
 import pytz
 #from tabulate import tabulate
-from IPython.display import HTML
 from styleframe import StyleFrame
 from openpyxl import load_workbook
 from openpyxl.styles import Alignment
