@@ -19,7 +19,7 @@ jobs :
        - name : library installation 
          run : |
           python -m pip install --upgrade pip
-          pip install gitpython openpyxl datetime pytz pandas styleFrame openpyxl
+          pip install gitpython openpyxl datetime pytz pandas styleframe openpyxl
        - name : automation
          run: python file_test/auto.py  
        - name : excel file artifacts
