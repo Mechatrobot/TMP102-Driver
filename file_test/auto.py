@@ -64,7 +64,7 @@ for i in range(len(filename_extract)) :
 
 #data_frame2.update(data_frame)
 print(data_frame2)
-display(data_frame2)
+#display(data_frame2)
 excel_updated_file = os.path.join('C:/Users/se93297/Desktop/TMP102-Driver-main/file_test','Updated_commits.xlsx')
 #data_frame2.to_excel(excel_updated_file, index=False, sheet_name= 'Commits')  # create the excel file
 StyleFrame(data_frame2).to_excel(excel_updated_file,sheet_name = 'TEST').close()
