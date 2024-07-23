@@ -27,6 +27,11 @@ jobs :
          with:
             name: commits_list
             path: C:/Users/se93297/Desktop/TMP102-Driver-main/file_test/commits_list.xlsx
+       - name : Dashboard updates artifacts 
+         uses : actions/upload-artifact@v4
+         with : 
+            name : Dashboard
+            path : C:/Users/se93297/Desktop/TMP102-Driver-main/file_test/Updated_commits.xlsx
 
             
 
