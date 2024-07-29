@@ -79,7 +79,6 @@ sheet.column_dimensions['D'].width = 43
 #SHA_string = SHA_extract[0]
 #new_sha = SHA_string.split(";")
 #print(new_sha)
-       #display(HTML(data_frame2.to_html().replace(";","<br>")))
        #if filename_extarct[i] in data_frame2['File'].values :
        #data_frame2.loc[data_frame2['File'] == filename_extract[i], 'Revision du scenario'] += 0.1
 #data_frame2.update(data_frame)
