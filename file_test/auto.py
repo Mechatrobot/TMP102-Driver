@@ -81,7 +81,7 @@ sheet.column_dimensions['D'].width = 43
        #if filename_extarct[i] in data_frame2['File'].values :
        #data_frame2.loc[data_frame2['File'] == filename_extract[i], 'Revision du scenario'] += 0.1
 #data_frame2.update(data_frame)
-excel_updated_file = os.path.join('C:/Users/se93297/Desktop/TMP102-Driver-main/file_test','Updated_commits.xlsx')
+excel_updated_file = os.path.join('C:/Users/se93297/Desktop/TMP102-Driver-main/file_test','dashboard.xlsx')
 #data_frame2.to_excel(excel_updated_file, index=False, sheet_name= 'Commits')  # create the excel file
 #StyleFrame(data_frame2).to_excel(excel_updated_file,sheet_name = 'TEST').close()
 
@@ -101,7 +101,7 @@ excel_updated_file = os.path.join('C:/Users/se93297/Desktop/TMP102-Driver-main/f
 #    for col in range(1,ws.max_column+1):
 #        cell=ws.cell(row, col)
 #        cell.alignment = Alignment(horizontal='left')
-wb.save("dash.xlsx")
+wb.save(excel_updated_file)
 #data_frame2['Revision du scenario'] = data_frame2['Revision du scenario'].astype(float)
 #data_frame2['Revision du scenario'] += 0.1
 #print(data_frame2['Revision du scenario'])
