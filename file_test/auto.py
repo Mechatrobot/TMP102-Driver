@@ -101,7 +101,7 @@ excel_updated_file = os.path.join('C:/Users/se93297/Desktop/TMP102-Driver-main/f
 #    for col in range(1,ws.max_column+1):
 #        cell=ws.cell(row, col)
 #        cell.alignment = Alignment(horizontal='left')
-wb.save("/content/C:/Users/se93297/Desktop/TMP102-Driver-main/file_test/test.xlsx")
+wb.save("file_test/test.xlsx")
 #data_frame2['Revision du scenario'] = data_frame2['Revision du scenario'].astype(float)
 #data_frame2['Revision du scenario'] += 0.1
 #print(data_frame2['Revision du scenario'])
