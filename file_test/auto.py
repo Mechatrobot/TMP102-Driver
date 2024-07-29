@@ -38,7 +38,7 @@ data_frame2 = pd.read_excel("file_test/extrait_dash.xlsx")
 #data_frame2['Revision du scenario'] = data_frame2['Revision du scenario'].astype(float)
 #print(data_frame2)
 
-wb = load_workbook("/content/C:/Users/se93297/Desktop/TMP102-Driver-main/file_test/extrait_dash.xlsx")
+wb = load_workbook("file_test/extrait_dash.xlsx")
 sheet = wb.active
 
 filename_extract = [cell.value for cell in sheet['A'][3:]]  
