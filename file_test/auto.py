@@ -34,7 +34,7 @@ for commit in commits :
 data_frame = pd.DataFrame(commit_data) #convert commit data to DataFrame to put it on excel
 excel_file = os.path.join('C:/Users/se93297/Desktop/TMP102-Driver-main/file_test','commits_list.xlsx')  # create the excel file
 data_frame.to_excel(excel_file, index=False, sheet_name= 'Commits') #assign DataFrame to excel
-data_frame2 = pd.read_excel("/content/C:/Users/se93297/Desktop/TMP102-Driver-main/file_test/extrait_dash.xlsx")
+data_frame2 = pd.read_excel("file_test/extrait_dash.xlsx")
 #data_frame2['Revision du scenario'] = data_frame2['Revision du scenario'].astype(float)
 #print(data_frame2)
 
