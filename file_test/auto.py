@@ -54,6 +54,10 @@ print(filename_extract)
 #    if filename in filename_extract :
 #        print('good')
 #print(data_frame2[data_frame2.columns[0]])
+
+filename_commithistory = filename_commithistory[::-1]
+SHA_commithistory = SHA_commithistory[::-1]
+
 for i in range(len(filename_extract)) :
   for j in range(len(filename_commithistory)) :
      if filename_extract[i] in filename_commithistory[j] :
