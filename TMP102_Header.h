@@ -1,7 +1,7 @@
 #include <main.h>
 #include <stdio.h>
 #include <string.h>
-//é"uhduzei
+//é"uhdu
 typedef enum {TMP102_OK = 0 , TMP102_ERROR = -1}TMP102_STATE;
 
 typedef enum {
