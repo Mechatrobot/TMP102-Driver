@@ -1,0 +1,749 @@
+#INFOFILE1.1 - Do not remove this line!
+FileIdent = CarMaker-TestRun 10
+FileCreator = CarMaker 10.2.2
+Description:
+	DescriptionEV/STEX : ACC/FCW status check / APPLICABILITY : ACC Stop&Go ACC 30 / DIVERSITE : ALL / TOOLS : Canalyzer + cancases (CAPL) Canape + Vx  (for acquisition) Front Radar brakepoint
+	Designation FR(EV/STEX) :  ACC deactivation in case of blocked pushes + ACC rehabilitation after blocked pushes
+	Extract ProVe: Test_rating_TES-00000097_Extract_V8.xlsm
+	Ref. DocInfo : 00998_22_00676 / Ref. PLM : TES-00000097(10) - révision du scénario : 5
+Vehicle = CONFIG_B785_BVA_ESC_DW10FD_AM6III
+Trailer =
+Tire.0 =
+Tire.1 =
+Tire.2 =
+Tire.3 =
+Snapshot.TimeLimit =
+Snapshot.DistLimit =
+VehicleLoad.0.mass = 0
+VehicleLoad.0.pos = 0 0 0
+VehicleLoad.1.mass = 0
+VehicleLoad.1.pos = 0 0 0
+VehicleLoad.2.mass = 0
+VehicleLoad.2.pos = 0 0 0
+VehicleLoad.3.mass = 0
+VehicleLoad.3.pos = 0 0 0
+TrailerLoad.0.mass = 0
+TrailerLoad.0.pos = 0 0 0
+TrailerLoad.1.mass = 0
+TrailerLoad.1.pos = 0 0 0
+TrailerLoad.2.mass = 0
+TrailerLoad.2.pos = 0 0 0
+DrivMan.Cmds:
+	Qu::numero_manoeuvre=DM.ManNo-6
+DrivMan.Init.Velocity = $V_init=50
+DrivMan.Init.GearNo = 4
+DrivMan.Init.SteerAng = 0
+DrivMan.Init.LaneOffset = 0
+DrivMan.Init.OperatorActive = 1
+DrivMan.Init.OperatorState = drive
+DrivMan.VhclOperator.Kind = IPGOperator 1
+DrivMan.nDMan = 57
+DrivMan.0.Info = Jump vers Manoeuvre 6
+DrivMan.0.Label = JUMP
+DrivMan.0.TimeLimit = 0.1
+DrivMan.0.Cmds:
+	Eval ManJump 6
+DrivMan.0.LongDyn = Driver 1 0
+DrivMan.0.LatDyn = Driver 0
+DrivMan.1.Info = Deselection ADAS
+DrivMan.1.Label = DESELECT_ADAS
+DrivMan.1.TimeLimit = 1.5
+DrivMan.1.Cmds:
+	#On s'assure qu'aucune fonction ADAS n'est selectionné avant de démarrer le test
+	###Eval (DM.ManTime >= 1.05 && DM.ManTime <= 1.15 && RXvariable.FONCT_ACT_LVV_RVV > 0) ? Switch.DriveP.DMDP_XVV_SELECTION_RVV=1 : Switch.DriveP.DMDP_XVV_SELECTION_RVV=0;
+	###Eval (DM.ManTime >= 1.25 && RXvariable.FONCT_ACT_LVV_RVV > 0) ? ManJump(DM.ManNo);
+DrivMan.1.LongDyn = Manual
+DrivMan.1.LatDyn = Driver 0
+DrivMan.2.Info = Verification PRES_COND
+DrivMan.2.Label = CHECK_PRES_COND
+DrivMan.2.TimeLimit = 1.5
+DrivMan.2.Cmds:
+	#Conducteur absent
+	###Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.45 && RXvariable.PRES_COND == 1) ? ManJump("PRES_COND")
+	#MGS_ST_INFO en defaut
+	###Eval (DM.ManTime >= 0.55 && DM.ManTime <= 0.95 && RXvariable.MGS_ST_INFO == 15) ? ManJump("PRES_COND")
+	#Conducteur present
+	###Eval (DM.ManTime >= 1.05 && DM.ManTime <= 1.45 && RXvariable.PRES_COND == 2) ? ManJump("DESSERAGE_FSE")
+DrivMan.2.LongDyn = Manual
+DrivMan.2.LatDyn = Driver 0
+DrivMan.3.Info = Realisation PRES_COND
+DrivMan.3.Label = PRES_COND
+DrivMan.3.TimeLimit = 16.0
+DrivMan.3.Cmds:
+	#KEY OFF
+	###Eval (DM.ManTime >= 0.05 && DM.ManTime < 1.05) ?SysPwrMode.b_StopAtKeyIn = 2;
+	###Eval (DM.ManTime >= 0.05 && DM.ManTime < 1.05) ?SysPwrMode.b_StopAtRun = 0;
+	#DEBOUCLAGE CEINTURE
+	###Eval (DM.ManTime >= 1.05 && DM.ManTime < 2.05) ? SysPwrMode.b_StopAtKeyIn = 2;
+	###Eval (DM.ManTime >= 1.05 && DM.ManTime < 2.05) ? SysPwrMode.b_StopAtRun = 0;
+	###Eval (DM.ManTime >= 1.05 && DM.ManTime < 2.05) ? Switch.SeatBelt.Driver = 0;
+	#OUVERTURE PORTE
+	###Eval (DM.ManTime >= 2.05 && DM.ManTime < 4.05) ? SysPwrMode.b_StopAtKeyIn = 2;
+	###Eval (DM.ManTime >= 2.05 && DM.ManTime < 4.05) ? SysPwrMode.b_StopAtRun = 0;
+	###Eval (DM.ManTime >= 2.05 && DM.ManTime < 4.05) ? Switch.SeatBelt.Driver = 0;
+	###Eval (DM.ManTime >= 2.05 && DM.ManTime < 4.05) ? Switch.Door.DriverDoor = 1;
+	#FERMETURE PORTE
+	###Eval (DM.ManTime >= 4.05 && DM.ManTime < 6.05) ? SysPwrMode.b_StopAtKeyIn = 2;
+	###Eval (DM.ManTime >= 4.05 && DM.ManTime < 6.05) ? SysPwrMode.b_StopAtRun = 0;
+	###Eval (DM.ManTime >= 4.05 && DM.ManTime < 6.05) ? Switch.SeatBelt.Driver = 0;
+	###Eval (DM.ManTime >= 4.05 && DM.ManTime < 6.05) ? Switch.Door.DriverDoor = 0;
+	#OUVERTURE PORTE
+	###Eval (DM.ManTime >= 6.05 && DM.ManTime < 8.05) ? SysPwrMode.b_StopAtKeyIn = 2;
+	###Eval (DM.ManTime >= 6.05 && DM.ManTime < 8.05) ? SysPwrMode.b_StopAtRun = 0;
+	###Eval (DM.ManTime >= 6.05 && DM.ManTime < 8.05) ? Switch.SeatBelt.Driver = 0;
+	###Eval (DM.ManTime >= 6.05 && DM.ManTime < 8.05) ? Switch.Door.DriverDoor = 1;
+	#FERMETURE PORTE
+	###Eval (DM.ManTime >= 8.05 && DM.ManTime < 10.05) ? SysPwrMode.b_StopAtKeyIn = 2;
+	###Eval (DM.ManTime >= 8.05 && DM.ManTime < 10.05) ? SysPwrMode.b_StopAtRun = 0;
+	###Eval (DM.ManTime >= 8.05 && DM.ManTime < 10.05) ? Switch.SeatBelt.Driver = 0;
+	###Eval (DM.ManTime >= 8.05 && DM.ManTime < 10.05) ? Switch.Door.DriverDoor = 0;
+	#BOUCLAGE CEINTURE
+	###Eval (DM.ManTime >= 10.05 && DM.ManTime < 11.05) ? SysPwrMode.b_StopAtKeyIn = 2;
+	###Eval (DM.ManTime >= 10.05 && DM.ManTime < 11.05) ? SysPwrMode.b_StopAtRun = 0;
+	###Eval (DM.ManTime >= 10.05 && DM.ManTime < 11.05) ? Switch.SeatBelt.Driver = 2;
+	###Eval (DM.ManTime >= 10.05 && DM.ManTime < 11.05) ? Switch.Door.DriverDoor = 0;
+	#KEY ON
+	###Eval (DM.ManTime >= 11.05 && DM.ManTime < 13.05) ? SysPwrMode.b_StopAtKeyIn = 0;
+	###Eval (DM.ManTime >= 11.05 && DM.ManTime < 13.05) ? SysPwrMode.b_StopAtRun = 1;
+	###Eval (DM.ManTime >= 11.05 && DM.ManTime < 13.05) ? Switch.SeatBelt.Driver = 2;
+	###Eval (DM.ManTime >= 11.05 && DM.ManTime < 13.05) ? Switch.Door.DriverDoor = 0;
+	#DEMARRER MOTEUR
+	###Eval (DM.ManTime >= 13.05 && DM.ManTime < 15.15) ? Switch.Door.DriverDoor = 0;
+	###Eval (DM.ManTime >= 13.05 && DM.ManTime < 15.15) ? Switch.SeatBelt.Driver = 2;
+	###Eval (DM.ManTime >= 13.05 && DM.ManTime < 15.15) ? SysPwrMode.b_StopAtCrnk = 1;
+	###Eval (DM.ManTime >= 13.05 && DM.ManTime < 15.15) ? SysPwrMode.b_StopAtRun = 0;
+	###Eval (DM.ManTime >= 13.05 && DM.ManTime < 15.15) ? SysPwrMode.b_StopAtCrnk = 0;
+	###Eval (DM.ManTime >= 13.05 && DM.ManTime < 15.15) ? SysPwrMode.b_StopAtRun = 1;
+DrivMan.3.LongDyn = "Driver  "
+DrivMan.3.LatDyn = Driver
+DrivMan.4.Info = Desserrage FSE
+DrivMan.4.Label = DESSERAGE_FSE
+DrivMan.4.TimeLimit = 1.0
+DrivMan.4.Cmds:
+	###Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ?  DM.BrakePark=0.5
+	###Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.8) ?  DM.Brake=0.6
+DrivMan.4.Clutch = 0 0 0.2 abs
+DrivMan.4.Gas = 0 0 0.2 abs
+DrivMan.4.Brake = 0 0 0.2 abs
+DrivMan.4.BrakePark = 0 0 0.2 abs
+DrivMan.4.LongDyn = Manual
+DrivMan.4.LatDyn = Driver 0
+DrivMan.5.Info = Roulage de demarrage
+DrivMan.5.Label = ROULAGE_DEM
+DrivMan.5.TimeLimit = 600
+DrivMan.5.EndCondition = Vhcl.sRoad>=1200
+DrivMan.5.LongDyn = VelControl $V_dem=50 0.0 1.0 0.0 1 0.0
+DrivMan.5.LatDyn = Driver 0
+DrivMan.6.Info = Select ACC
+DrivMan.6.TimeLimit = 2
+DrivMan.6.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.DMDP_XVV_SELECTION_RVV=1 : IO.GUI.DMDP_XVV_SELECTION_RVV=0;
+DrivMan.6.LongDyn = VelControl 50 0.0 1.0 0.0 1 0.0
+DrivMan.6.LatDyn = Driver 0
+DrivMan.7.Info = ACC Activation
+DrivMan.7.TimeLimit = 1
+DrivMan.7.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.SET_SPD_PLUS=1 : IO.GUI.SET_SPD_PLUS=0;
+DrivMan.7.Clutch = 0.0 0 0.2 abs
+DrivMan.7.Gas = 0.0 0 0.2 abs
+DrivMan.7.Brake = 0.0 0 0.2 abs
+DrivMan.7.BrakePark = 0 0 0.2 abs
+DrivMan.7.LongDyn = Manual
+DrivMan.7.LatDyn = Driver 0
+DrivMan.8.Info = set setpoint speed at 50 kph
+DrivMan.8.TimeLimit = 3
+DrivMan.8.Cmds:
+	Eval Qu::Vcons=50;
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55 && CAN_BUS.AdrSpdSetPoint < Vcons-3) ? IO.GUI.SET_SPD_PLUS=1 : IO.GUI.SET_SPD_PLUS=0;
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55 && CAN_BUS.AdrSpdSetPoint > Vcons-3) ? IO.GUI.SET_SPD_MOINS=1 : IO.GUI.SET_SPD_MOINS=0;
+	Eval (DM.ManTime >= 1 && (CAN_BUS.AdrSpdSetPoint != Vcons-3) && CAN_BUS.AdrSpdSetPoint < 255) ? ManJump(DM.ManNo);
+	
+DrivMan.8.Clutch = 0.0 0 0.2 abs
+DrivMan.8.Gas = 0.0 0 0.2 abs
+DrivMan.8.Brake = 0.0 0 0.2 abs
+DrivMan.8.BrakePark = 0 0 0.2 abs
+DrivMan.8.LongDyn = Manual
+DrivMan.8.LatDyn = Driver 0
+DrivMan.9.Info = [CI] ACC function selected and activated Rolling vehicle
+DrivMan.9.Label = STEP-0011376867
+DrivMan.9.TimeLimit = 1
+DrivMan.9.Clutch = 0.0 0 0.2 abs
+DrivMan.9.Gas = 0.0 0 0.2 abs
+DrivMan.9.Brake = 0.0 0 0.2 abs
+DrivMan.9.BrakePark = 0 0 0.2 abs
+DrivMan.9.LongDyn = Manual
+DrivMan.9.LatDyn = Driver 0
+DrivMan.10.Info = [AC] Block push for 30s ==> Push Set+ / Notes : to block the push set +, please do the test while accelerating  throw gaz pedal
+DrivMan.10.Label = STEP-0011376868
+DrivMan.10.TimeLimit = 30
+DrivMan.10.Cmds:
+	Eval IO.GUI.SET_SPD_PLUS=1;
+DrivMan.10.Clutch = 0.0 0 0.2 abs
+DrivMan.10.Gas = 0.5 0 0.2 abs
+DrivMan.10.Brake = 0.0 0 0.2 abs
+DrivMan.10.BrakePark = 0 0 0.2 abs
+DrivMan.10.LongDyn = Manual
+DrivMan.10.LatDyn = Driver 0
+DrivMan.11.Info = [ER] The value of the signal LONGITUDINAL_REQUEST is GbDirect within 580 ms (LONGITUDINAL_REQUEST=GbDirect:100=100,FD3_DAT_VSM_35D,CAN_FD3)
+DrivMan.11.Label = STEP-0011376869
+DrivMan.11.TimeLimit = 1
+DrivMan.11.Cmds:
+	Eval IO.GUI.SET_SPD_PLUS=0;
+DrivMan.11.Clutch = 0.0 0 0.2 abs
+DrivMan.11.Gas = 0.0 0 0.2 abs
+DrivMan.11.Brake = 0.0 0 0.2 abs
+DrivMan.11.BrakePark = 0 0 0.2 abs
+DrivMan.11.LongDyn = Manual
+DrivMan.11.LatDyn = Driver 0
+DrivMan.12.Info = [ER] The value of the signal  ACCstinfo is inactif(ACC_stInfo =Inactive 00=00,FD8_ASU_B_0A3,CAN_FD8)
+DrivMan.12.Label = STEP-0011376870
+DrivMan.12.TimeLimit = 1
+DrivMan.12.Clutch = 0.0 0 0.2 abs
+DrivMan.12.Gas = 0.0 0 0.2 abs
+DrivMan.12.Brake = 0.0 0 0.2 abs
+DrivMan.12.BrakePark = 0 0 0.2 abs
+DrivMan.12.LongDyn = Manual
+DrivMan.12.LatDyn = Driver 0
+DrivMan.13.Info = [ER] FOR CDPO : The Value of the signal ''ETAT_FONCT_LVV_RVV" is Defaut (ACC_XVV_ETAT_FONCTION_IHM_AFF=DEFAUT:111=111,HS7_ACC_XVV_IHM_ETAT,CAN_HS7) \nFOR DCROSS : The Value of the signal ''ETAT_FONCT_LVV_RVV" is Defaut (ACC_XVV_ETAT_FONCTION_IHM_AFF=DEFAUT:111=111,FD7_VSM_DATA_3,CAN_FD7)
+DrivMan.13.Label = STEP-0011376871
+DrivMan.13.TimeLimit = 1
+DrivMan.13.Clutch = 0.0 0 0.2 abs
+DrivMan.13.Gas = 0.0 0 0.2 abs
+DrivMan.13.Brake = 0.0 0 0.2 abs
+DrivMan.13.BrakePark = 0 0 0.2 abs
+DrivMan.13.LongDyn = Manual
+DrivMan.13.LatDyn = Driver 0
+DrivMan.14.Info = [AC] Deselect ACC
+DrivMan.14.Label = STEP-0011376872
+DrivMan.14.TimeLimit = 60
+DrivMan.14.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) || (DM.ManTime >= 0.75 && DM.ManTime <= 1.25) ? IO.GUI.DMDP_XVV_SELECTION_RVV=1 : IO.GUI.DMDP_XVV_SELECTION_RVV=0;
+DrivMan.14.LongDyn = VelControl 175 0.0 1.0 1 1 0.0
+DrivMan.14.LatDyn = Driver 0
+DrivMan.15.Info = [AC] Select ACC
+DrivMan.15.Label = STEP-0011376873
+DrivMan.15.TimeLimit = 5
+DrivMan.15.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.DMDP_XVV_SELECTION_RVV=1 : IO.GUI.DMDP_XVV_SELECTION_RVV=0;
+DrivMan.15.LongDyn = VelControl 175 0.0 1.0 0.0 1 0.0
+DrivMan.15.LatDyn = Driver 0
+DrivMan.16.Info = [AC] Activate ACC
+DrivMan.16.Label = STEP-0011376874
+DrivMan.16.TimeLimit = 1
+DrivMan.16.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.SET_SPD_PLUS=1 : IO.GUI.SET_SPD_PLUS=0;
+DrivMan.16.Clutch = 0.0 0 0.2 abs
+DrivMan.16.Gas = 0.0 0 0.2 abs
+DrivMan.16.Brake = 0.0 0 0.2 abs
+DrivMan.16.BrakePark = 0 0 0.2 abs
+DrivMan.16.LongDyn = Manual
+DrivMan.16.LatDyn = Driver 0
+DrivMan.17.Info = [AC] ACC regulates normally
+DrivMan.17.Label = STEP-0011376875
+DrivMan.17.TimeLimit = 30
+DrivMan.17.Clutch = 0.0 0 0.2 abs
+DrivMan.17.Gas = 0.0 0 0.2 abs
+DrivMan.17.Brake = 0.0 0 0.2 abs
+DrivMan.17.BrakePark = 0 0 0.2 abs
+DrivMan.17.LongDyn = Manual
+DrivMan.17.LatDyn = Driver 0
+DrivMan.18.Info = [ER] The value of the signal ACC_ST_INFO is Actif within 580ms(ACC_stInfo =Active 01=01,FD8_ASU_B_0A3,CAN_FD8)
+DrivMan.18.Label = STEP-0011376876
+DrivMan.18.TimeLimit = 1
+DrivMan.18.Clutch = 0.0 0 0.2 abs
+DrivMan.18.Gas = 0.0 0 0.2 abs
+DrivMan.18.Brake = 0.0 0 0.2 abs
+DrivMan.18.BrakePark = 0 0 0.2 abs
+DrivMan.18.LongDyn = Manual
+DrivMan.18.LatDyn = Driver 0
+DrivMan.19.Info = [ER] The value of the signal ETAT_ACC_CMM is Actif effectif(VSCtl_stDVSRegExtd = ACTIF_EFFECTIF:101=101,FD8_DYN_ECM_077,CAN_FD8)
+DrivMan.19.Label = STEP-0011376877
+DrivMan.19.TimeLimit = 1
+DrivMan.19.Clutch = 0.0 0 0.2 abs
+DrivMan.19.Gas = 0.0 0 0.2 abs
+DrivMan.19.Brake = 0.0 0 0.2 abs
+DrivMan.19.BrakePark = 0 0 0.2 abs
+DrivMan.19.LongDyn = Manual
+DrivMan.19.LatDyn = Driver 0
+DrivMan.20.Info = [ER] The value of the signal "VMC_LONGITUDINALE_STATE" is Actif effectif(VMC_LONGITUDINAL_STATE = ACTIF_EFFECTIF 010=010,FD8_DYN_ESC_07A,CAN_FD8)
+DrivMan.20.Label = STEP-0011376878
+DrivMan.20.TimeLimit = 1
+DrivMan.20.Clutch = 0.0 0 0.2 abs
+DrivMan.20.Gas = 0.0 0 0.2 abs
+DrivMan.20.Brake = 0.0 0 0.2 abs
+DrivMan.20.BrakePark = 0 0 0.2 abs
+DrivMan.20.LongDyn = Manual
+DrivMan.20.LatDyn = Driver 0
+DrivMan.21.Info = [AC] Block push for 30s ==> Push Set- Notes : To block the Push Set - please start from a high setpoint speed
+DrivMan.21.Label = STEP-0011376879
+DrivMan.21.TimeLimit = 30
+DrivMan.21.Cmds:
+	Eval IO.GUI.SET_SPD_MOINS=1;
+DrivMan.21.Clutch = 0.0 0 0.2 abs
+DrivMan.21.Gas = 0.0 0 0.2 abs
+DrivMan.21.Brake = 0.0 0 0.2 abs
+DrivMan.21.BrakePark = 0 0 0.2 abs
+DrivMan.21.LongDyn = Manual
+DrivMan.21.LatDyn = Driver 0
+DrivMan.22.Info = [ER] The value of the signal LONGITUDINAL_REQUEST is GbDirect within 580ms (LONGITUDINAL_REQUEST=GbDirect:100=100,FD3_DAT_VSM_35D,CAN_FD3)
+DrivMan.22.Label = STEP-0011376880
+DrivMan.22.TimeLimit = 1
+DrivMan.22.Cmds:
+	Eval IO.GUI.SET_SPD_MOINS=0;
+DrivMan.22.Clutch = 0.0 0 0.2 abs
+DrivMan.22.Gas = 0.0 0 0.2 abs
+DrivMan.22.Brake = 0.0 0 0.2 abs
+DrivMan.22.BrakePark = 0 0 0.2 abs
+DrivMan.22.LongDyn = Manual
+DrivMan.22.LatDyn = Driver 0
+DrivMan.23.Info = [ER] The value of the signal  ACCstinfo is inactif(ACC_stInfo =Inactive 00=00,FD8_ASU_B_0A3,CAN_FD8)
+DrivMan.23.Label = STEP-0011376881
+DrivMan.23.TimeLimit = 1
+DrivMan.23.Clutch = 0.0 0 0.2 abs
+DrivMan.23.Gas = 0.0 0 0.2 abs
+DrivMan.23.Brake = 0.0 0 0.2 abs
+DrivMan.23.BrakePark = 0 0 0.2 abs
+DrivMan.23.LongDyn = Manual
+DrivMan.23.LatDyn = Driver 0
+DrivMan.24.Info = [ER] FOR CDPO : The Value of the signal ''ETAT_FONCT_LVV_RVV" is Defaut (ACC_XVV_ETAT_FONCTION_IHM_AFF=DEFAUT:111=111,HS7_ACC_XVV_IHM_ETAT,CAN_HS7) \nFOR DCROSS : The Value of the signal ''ETAT_FONCT_LVV_RVV" is Defaut (ACC_XVV_ETAT_FONCTION_IHM_AFF=DEFAUT:111=111,FD7_VSM_DATA_3,CAN_FD7)
+DrivMan.24.Label = STEP-0011376882
+DrivMan.24.TimeLimit = 1
+DrivMan.24.Clutch = 0.0 0 0.2 abs
+DrivMan.24.Gas = 0.0 0 0.2 abs
+DrivMan.24.Brake = 0.0 0 0.2 abs
+DrivMan.24.BrakePark = 0 0 0.2 abs
+DrivMan.24.LongDyn = Manual
+DrivMan.24.LatDyn = Driver 0
+DrivMan.25.Info = [AC] Deselect ACC
+DrivMan.25.Label = STEP-0011376883
+DrivMan.25.TimeLimit = 5
+DrivMan.25.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) | (DM.ManTime >= 0.75 && DM.ManTime <= 1.25) ? IO.GUI.DMDP_XVV_SELECTION_RVV=1 : IO.GUI.DMDP_XVV_SELECTION_RVV=0;
+DrivMan.25.Clutch = 0 0 0.2 abs
+DrivMan.25.Gas = 0 0 0.2 abs
+DrivMan.25.Brake = 0 0 0.2 abs
+DrivMan.25.BrakePark = 0 0 0.2 abs
+DrivMan.25.LongDyn = Manual
+DrivMan.25.LatDyn = Driver 0
+DrivMan.26.Info = Moving with 50kph
+DrivMan.26.TimeLimit = 60
+DrivMan.26.LongDyn = VelControl 50 0.0 1.0 1 1 0.0
+DrivMan.26.LatDyn = Driver 0
+DrivMan.27.Info = [AC] Select ACC
+DrivMan.27.Label = STEP-0011376884
+DrivMan.27.TimeLimit = 5
+DrivMan.27.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.DMDP_XVV_SELECTION_RVV=1 : IO.GUI.DMDP_XVV_SELECTION_RVV=0;
+DrivMan.27.LongDyn = VelControl 50 0.0 1.0 0.0 1 0.0
+DrivMan.27.LatDyn = Driver 0
+DrivMan.28.Info = [AC] Activate ACC
+DrivMan.28.Label = STEP-0011376885
+DrivMan.28.TimeLimit = 1
+DrivMan.28.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.SET_SPD_PLUS=1 : IO.GUI.SET_SPD_PLUS=0;
+DrivMan.28.Clutch = 0.0 0 0.2 abs
+DrivMan.28.Gas = 0.0 0 0.2 abs
+DrivMan.28.Brake = 0.0 0 0.2 abs
+DrivMan.28.BrakePark = 0 0 0.2 abs
+DrivMan.28.LongDyn = Manual
+DrivMan.28.LatDyn = Driver 0
+DrivMan.29.Info = [ER] ACC regulates normally
+DrivMan.29.Label = STEP-0011376886
+DrivMan.29.TimeLimit = 30
+DrivMan.29.Clutch = 0.0 0 0.2 abs
+DrivMan.29.Gas = 0.0 0 0.2 abs
+DrivMan.29.Brake = 0.0 0 0.2 abs
+DrivMan.29.BrakePark = 0 0 0.2 abs
+DrivMan.29.LongDyn = Manual
+DrivMan.29.LatDyn = Driver 0
+DrivMan.30.Info = [ER] The value of the signal ACC_ST_INFO is Actif within 580ms (ACC_stInfo =Active 01=01,FD8_ASU_B_0A3,CAN_FD8)
+DrivMan.30.Label = STEP-0011376887
+DrivMan.30.TimeLimit = 1
+DrivMan.30.Clutch = 0.0 0 0.2 abs
+DrivMan.30.Gas = 0.0 0 0.2 abs
+DrivMan.30.Brake = 0.0 0 0.2 abs
+DrivMan.30.BrakePark = 0 0 0.2 abs
+DrivMan.30.LongDyn = Manual
+DrivMan.30.LatDyn = Driver 0
+DrivMan.31.Info = [ER] The value of the signal ETAT_ACC_CMM is Actif effectif (VSCtl_stDVSRegExtd = ACTIF_EFFECTIF 101=101,FD8_DYN_ECM_077,CAN_FD8)
+DrivMan.31.Label = STEP-0011376888
+DrivMan.31.TimeLimit = 1
+DrivMan.31.Clutch = 0.0 0 0.2 abs
+DrivMan.31.Gas = 0.0 0 0.2 abs
+DrivMan.31.Brake = 0.0 0 0.2 abs
+DrivMan.31.BrakePark = 0 0 0.2 abs
+DrivMan.31.LongDyn = Manual
+DrivMan.31.LatDyn = Driver 0
+DrivMan.32.Info = [ER] The value of the signal "VMC_LONGITUDINALE_STATE" is Actif effectif(VMC_LONGITUDINAL_STATE = ACTIF_EFFECTIF,FD8_DYN_ESC_07A,CAN_FD8)
+DrivMan.32.Label = STEP-0011376889
+DrivMan.32.TimeLimit = 1
+DrivMan.32.Clutch = 0.0 0 0.2 abs
+DrivMan.32.Gas = 0.0 0 0.2 abs
+DrivMan.32.Brake = 0.0 0 0.2 abs
+DrivMan.32.BrakePark = 0 0 0.2 abs
+DrivMan.32.LongDyn = Manual
+DrivMan.32.LatDyn = Driver 0
+DrivMan.33.Info = [AC] Block push for 30s ==> Push OK
+DrivMan.33.Label = STEP-0011376890
+DrivMan.33.TimeLimit = 30
+DrivMan.33.Cmds:
+	Eval IO.GUI.DMD_OK_VCI=1;
+DrivMan.33.Clutch = 0.0 0 0.2 abs
+DrivMan.33.Gas = 0.0 0 0.2 abs
+DrivMan.33.Brake = 0.0 0 0.2 abs
+DrivMan.33.BrakePark = 0 0 0.2 abs
+DrivMan.33.LongDyn = Manual
+DrivMan.33.LatDyn = Driver 0
+DrivMan.34.Info = [ER] The value of the signal LONGITUDINAL_REQUEST is GbDirect within 580ms (LONGITUDINAL_REQUEST=GbDirect:100=100,FD3_DAT_VSM_35D,CAN_FD3)
+DrivMan.34.Label = STEP-0011376891
+DrivMan.34.TimeLimit = 1
+DrivMan.34.Cmds:
+	Eval IO.GUI.DMD_OK_VCI=0;
+DrivMan.34.Clutch = 0.0 0 0.2 abs
+DrivMan.34.Gas = 0.0 0 0.2 abs
+DrivMan.34.Brake = 0.0 0 0.2 abs
+DrivMan.34.BrakePark = 0 0 0.2 abs
+DrivMan.34.LongDyn = Manual
+DrivMan.34.LatDyn = Driver 0
+DrivMan.35.Info = [ER] The value of the signal  ACCstinfo is inactif(ACC_stInfo =Inactive 00=00,FD8_ASU_B_0A3,CAN_FD8)
+DrivMan.35.Label = STEP-0011376892
+DrivMan.35.TimeLimit = 1
+DrivMan.35.Clutch = 0.0 0 0.2 abs
+DrivMan.35.Gas = 0.0 0 0.2 abs
+DrivMan.35.Brake = 0.0 0 0.2 abs
+DrivMan.35.BrakePark = 0 0 0.2 abs
+DrivMan.35.LongDyn = Manual
+DrivMan.35.LatDyn = Driver 0
+DrivMan.36.Info = [ER] FOR CDPO : The Value of the signal ''ETAT_FONCT_LVV_RVV" is Defaut (ACC_XVV_ETAT_FONCTION_IHM_AFF=DEFAUT:111=111,HS7_ACC_XVV_IHM_ETAT,CAN_HS7) \nFOR DCROSS : The Value of the signal ''ETAT_FONCT_LVV_RVV" is Defaut (ACC_XVV_ETAT_FONCTION_IHM_AFF=DEFAUT:111=111,FD7_VSM_DATA_3,CAN_FD7)
+DrivMan.36.Label = STEP-0011376893
+DrivMan.36.TimeLimit = 1
+DrivMan.36.Clutch = 0.0 0 0.2 abs
+DrivMan.36.Gas = 0.0 0 0.2 abs
+DrivMan.36.Brake = 0.0 0 0.2 abs
+DrivMan.36.BrakePark = 0 0 0.2 abs
+DrivMan.36.LongDyn = Manual
+DrivMan.36.LatDyn = Driver 0
+DrivMan.37.Info = [AC] Deselect ACC
+DrivMan.37.Label = STEP-0011376894
+DrivMan.37.TimeLimit = 60
+DrivMan.37.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) | (DM.ManTime >= 0.75 && DM.ManTime <= 1.25) ? IO.GUI.DMDP_XVV_SELECTION_RVV=1 : IO.GUI.DMDP_XVV_SELECTION_RVV=0;
+DrivMan.37.LongDyn = VelControl 50 0.0 1.0 1 1 0.0
+DrivMan.37.LatDyn = Driver 0
+DrivMan.38.Info = [AC] Select ACC
+DrivMan.38.Label = STEP-0011376895
+DrivMan.38.TimeLimit = 3
+DrivMan.38.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.DMDP_XVV_SELECTION_RVV=1 : IO.GUI.DMDP_XVV_SELECTION_RVV=0;
+DrivMan.38.LongDyn = VelControl 50 0.0 1.0 0.0 1 0.0
+DrivMan.38.LatDyn = Driver 0
+DrivMan.39.Info = [AC] Activate ACC
+DrivMan.39.Label = STEP-0011376896
+DrivMan.39.TimeLimit = 3
+DrivMan.39.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.SET_SPD_PLUS=1 : IO.GUI.SET_SPD_PLUS=0;
+DrivMan.39.Clutch = 0.0 0 0.2 abs
+DrivMan.39.Gas = 0.0 0 0.2 abs
+DrivMan.39.Brake = 0.0 0 0.2 abs
+DrivMan.39.BrakePark = 0 0 0.2 abs
+DrivMan.39.LongDyn = Manual
+DrivMan.39.LatDyn = Driver 0
+DrivMan.40.Info = [ER] ACC regulates normally
+DrivMan.40.Label = STEP-0011376897
+DrivMan.40.TimeLimit = 30
+DrivMan.40.Clutch = 0.0 0 0.2 abs
+DrivMan.40.Gas = 0.0 0 0.2 abs
+DrivMan.40.Brake = 0.0 0 0.2 abs
+DrivMan.40.BrakePark = 0 0 0.2 abs
+DrivMan.40.LongDyn = Manual
+DrivMan.40.LatDyn = Driver 0
+DrivMan.41.Info = [ER] The value of the signal ACC_ST_INFO is Actif within 580ms (ACC_stInfo =Active 01=01,FD8_ASU_B_0A3,CAN_FD8)
+DrivMan.41.Label = STEP-0011376898
+DrivMan.41.TimeLimit = 1
+DrivMan.41.Clutch = 0.0 0 0.2 abs
+DrivMan.41.Gas = 0.0 0 0.2 abs
+DrivMan.41.Brake = 0.0 0 0.2 abs
+DrivMan.41.BrakePark = 0 0 0.2 abs
+DrivMan.41.LongDyn = Manual
+DrivMan.41.LatDyn = Driver 0
+DrivMan.42.Info = [ER] The value of the signal ETAT_ACC_CMM is Actif effectif (VSCtl_stDVSRegExtd = ACTIF_EFFECTIF 101=101, FD8_DYN_ECM_077,CAN_FD8)
+DrivMan.42.Label = STEP-0011376899
+DrivMan.42.TimeLimit = 1
+DrivMan.42.Clutch = 0.0 0 0.2 abs
+DrivMan.42.Gas = 0.0 0 0.2 abs
+DrivMan.42.Brake = 0.0 0 0.2 abs
+DrivMan.42.BrakePark = 0 0 0.2 abs
+DrivMan.42.LongDyn = Manual
+DrivMan.42.LatDyn = Driver 0
+DrivMan.43.Info = [ER] The value of the signal "VMC_LONGITUDINALE_STATE" is Actif effectif(VMC_LONGITUDINAL_STATE = ACTIF_EFFECTIF 010=010,FD8_DYN_ESC_07A,CAN_FD8)
+DrivMan.43.Label = STEP-0011376900
+DrivMan.43.TimeLimit = 1
+DrivMan.43.Clutch = 0.0 0 0.2 abs
+DrivMan.43.Gas = 0.0 0 0.2 abs
+DrivMan.43.Brake = 0.0 0 0.2 abs
+DrivMan.43.BrakePark = 0 0 0.2 abs
+DrivMan.43.LongDyn = Manual
+DrivMan.43.LatDyn = Driver 0
+DrivMan.44.Info = [AC] Block push for 30s ==> Push press/resume
+DrivMan.44.Label = STEP-0011376901
+DrivMan.44.TimeLimit = 30
+DrivMan.44.Cmds:
+	Eval IO.GUI.ACTIVATION_ACC=1;
+DrivMan.44.Clutch = 0.0 0 0.2 abs
+DrivMan.44.Gas = 0.0 0 0.2 abs
+DrivMan.44.Brake = 0.0 0 0.2 abs
+DrivMan.44.BrakePark = 0 0 0.2 abs
+DrivMan.44.LongDyn = Manual
+DrivMan.44.LatDyn = Driver 0
+DrivMan.45.Info = [ER] The value of the signal LONGITUDINAL_REQUEST is GbDirect within 580ms(LONGITUDINAL_REQUEST=GbDirect:100=100,FD3_DAT_VSM_35D,CAN_FD3)
+DrivMan.45.Label = STEP-0011376902
+DrivMan.45.TimeLimit = 1
+DrivMan.45.Cmds:
+	Eval IO.GUI.ACTIVATION_ACC=0;
+DrivMan.45.Clutch = 0.0 0 0.2 abs
+DrivMan.45.Gas = 0.0 0 0.2 abs
+DrivMan.45.Brake = 0.0 0 0.2 abs
+DrivMan.45.BrakePark = 0 0 0.2 abs
+DrivMan.45.LongDyn = Manual
+DrivMan.45.LatDyn = Driver 0
+DrivMan.46.Info = [ER] The value of the signal  ACCstinfo is inactif(ACC_stInfo =Inactive 00=00,FD8_ASU_B_0A3,CAN_FD8)
+DrivMan.46.Label = STEP-0011376903
+DrivMan.46.TimeLimit = 1
+DrivMan.46.Clutch = 0.0 0 0.2 abs
+DrivMan.46.Gas = 0.0 0 0.2 abs
+DrivMan.46.Brake = 0.0 0 0.2 abs
+DrivMan.46.BrakePark = 0 0 0.2 abs
+DrivMan.46.LongDyn = Manual
+DrivMan.46.LatDyn = Driver 0
+DrivMan.47.Info = [ER] FOR CDPO : The Value of the signal ''ETAT_FONCT_LVV_RVV" is Defaut (ACC_XVV_ETAT_FONCTION_IHM_AFF=DEFAUT:111=111,HS7_ACC_XVV_IHM_ETAT,CAN_HS7) \nFOR DCROSS : The Value of the signal ''ETAT_FONCT_LVV_RVV" is Defaut (ACC_XVV_ETAT_FONCTION_IHM_AFF=DEFAUT:111=111,FD7_VSM_DATA_3,CAN_FD7)
+DrivMan.47.Label = STEP-0011376904
+DrivMan.47.TimeLimit = 1
+DrivMan.47.Clutch = 0.0 0 0.2 abs
+DrivMan.47.Gas = 0.0 0 0.2 abs
+DrivMan.47.Brake = 0.0 0 0.2 abs
+DrivMan.47.BrakePark = 0 0 0.2 abs
+DrivMan.47.LongDyn = Manual
+DrivMan.47.LatDyn = Driver 0
+DrivMan.48.Info = [AC] Deselect ACC
+DrivMan.48.Label = STEP-0011376905
+DrivMan.48.TimeLimit = 5
+DrivMan.48.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) | (DM.ManTime >= 0.75 && DM.ManTime <= 1.25) ? IO.GUI.DMDP_XVV_SELECTION_RVV=1 : IO.GUI.DMDP_XVV_SELECTION_RVV=0;
+DrivMan.48.Clutch = 0 0 0.2 abs
+DrivMan.48.Gas = 0 0 0.2 abs
+DrivMan.48.Brake = 0 0 0.2 abs
+DrivMan.48.BrakePark = 0 0 0.2 abs
+DrivMan.48.LongDyn = Manual
+DrivMan.48.LatDyn = Driver 0
+DrivMan.49.Info = Moving with 50kph
+DrivMan.49.TimeLimit = 60
+DrivMan.49.LongDyn = VelControl 50 0.0 1.0 1 1 0.0
+DrivMan.49.LatDyn = Driver 0
+DrivMan.50.Info = [AC] Select ACC
+DrivMan.50.Label = STEP-0011376906
+DrivMan.50.TimeLimit = 5
+DrivMan.50.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.DMDP_XVV_SELECTION_RVV=1 : IO.GUI.DMDP_XVV_SELECTION_RVV=0;
+DrivMan.50.LongDyn = VelControl 50 0.0 1.0 0.0 1 0.0
+DrivMan.50.LatDyn = Driver 0
+DrivMan.51.Info = [AC] Activate ACC
+DrivMan.51.Label = STEP-0011376907
+DrivMan.51.TimeLimit = 1
+DrivMan.51.Cmds:
+	Eval (DM.ManTime >= 0.05 && DM.ManTime <= 0.55) ? IO.GUI.SET_SPD_PLUS=1 : IO.GUI.SET_SPD_PLUS=0;
+DrivMan.51.Clutch = 0.0 0 0.2 abs
+DrivMan.51.Gas = 0.0 0 0.2 abs
+DrivMan.51.Brake = 0.0 0 0.2 abs
+DrivMan.51.BrakePark = 0 0 0.2 abs
+DrivMan.51.LongDyn = Manual
+DrivMan.51.LatDyn = Driver 0
+DrivMan.52.Info = [ER] ACC regulates normally
+DrivMan.52.Label = STEP-0011376908
+DrivMan.52.TimeLimit = 30
+DrivMan.52.Clutch = 0.0 0 0.2 abs
+DrivMan.52.Gas = 0.0 0 0.2 abs
+DrivMan.52.Brake = 0.0 0 0.2 abs
+DrivMan.52.BrakePark = 0 0 0.2 abs
+DrivMan.52.LongDyn = Manual
+DrivMan.52.LatDyn = Driver 0
+DrivMan.53.Info = [ER] The value of the signal ACC_ST_INFO is Actif within 580ms(ACC_stInfo = Active 01=01,FD3_ASU_B_0A3,CAN_FD3)
+DrivMan.53.Label = STEP-0011376909
+DrivMan.53.TimeLimit = 1
+DrivMan.53.Clutch = 0.0 0 0.2 abs
+DrivMan.53.Gas = 0.0 0 0.2 abs
+DrivMan.53.Brake = 0.0 0 0.2 abs
+DrivMan.53.BrakePark = 0 0 0.2 abs
+DrivMan.53.LongDyn = Manual
+DrivMan.53.LatDyn = Driver 0
+DrivMan.54.Info = [ER] The value of the signal ETAT_ACC_CMM is Actif effectif(VSCtl_stDVSRegExtd = ACTIF_EFFECTIF 101=101,FD8_DYN_ECM_077,CAN_FD8)
+DrivMan.54.Label = STEP-0011376910
+DrivMan.54.TimeLimit = 1
+DrivMan.54.Clutch = 0.0 0 0.2 abs
+DrivMan.54.Gas = 0.0 0 0.2 abs
+DrivMan.54.Brake = 0.0 0 0.2 abs
+DrivMan.54.BrakePark = 0 0 0.2 abs
+DrivMan.54.LongDyn = Manual
+DrivMan.54.LatDyn = Driver 0
+DrivMan.55.Info = [ER] The value of the signal "VMC_LONGITUDINALE_STATE" is Actif effectif(VMC_LONGITUDINAL_STATE=ACTIVE_EFFECTIVE 010=010,FD3_DYN_ESC_07A,CAN_FD3)
+DrivMan.55.Label = STEP-0011376911
+DrivMan.55.TimeLimit = 1
+DrivMan.55.Clutch = 0.0 0 0.2 abs
+DrivMan.55.Gas = 0.0 0 0.2 abs
+DrivMan.55.Brake = 0.0 0 0.2 abs
+DrivMan.55.BrakePark = 0 0 0.2 abs
+DrivMan.55.LongDyn = Manual
+DrivMan.55.LatDyn = Driver 0
+DrivMan.56.Info = Deselection ADAS
+DrivMan.56.Label = DESELECT_ADAS_END
+DrivMan.56.TimeLimit = 1.5
+DrivMan.56.Cmds:
+	#On s'assure qu'aucune fonction ADAS n'est selectionné avant de démarrer le test
+	###Eval (DM.ManTime >= 1.05 && DM.ManTime <= 1.15 && RXvariable.FONCT_ACT_LVV_RVV > 0) ? Switch.DriveP.DMDP_XVV_SELECTION_RVV=1 : Switch.DriveP.DMDP_XVV_SELECTION_RVV=0;
+	###Eval (DM.ManTime >= 1.25 && RXvariable.FONCT_ACT_LVV_RVV > 0) ? ManJump(DM.ManNo);
+DrivMan.56.LongDyn = Manual
+DrivMan.56.LatDyn = Sinus 0 time 2 0.0 1000 abs 1 0
+DrivMan.56.SteerMode = Torque
+Traffic.IFF.FName =
+Traffic.IFF.Time.Name =
+Traffic.N = 0
+Traffic.SpeedUnit = kmh
+DrivMan.OW.Active = 0
+DrivMan.OW.Quantities =
+DrivMan.OW.StartGearNo = 1
+DrivMan.OW.StartVelocity = 0.0
+DrivMan.OW.GasMax = 0.5
+DrivMan.OW.RefCh = Time
+DrivMan.OW.ConsiderRoadSigns = 0
+DrivMan.OW.sRoute.Offset = 0
+ErrorClass.0.Action = abort
+ErrorClass.0.Save = 0
+ErrorClass.0.WarningLimit = 3 5
+ErrorClass.1.Action = abort
+ErrorClass.1.Save = 0
+ErrorClass.1.WarningLimit = 3 5
+ErrorClass.2.Action = abort
+ErrorClass.2.Save = 0
+ErrorClass.2.WarningLimit = 3 5
+ErrorClass.3.Action = abort
+ErrorClass.3.Save = 0
+ErrorClass.3.WarningLimit = 3 5
+ErrorClass.4.Action = abort
+ErrorClass.4.Save = 0
+ErrorClass.4.WarningLimit = 3 5
+ErrorClass.5.Action = abort
+ErrorClass.5.Save = 0
+ErrorClass.5.WarningLimit = 3 5
+ErrorClass.6.Action = abort
+ErrorClass.6.Save = 0
+ErrorClass.6.WarningLimit = 10 5
+ErrorClass.7.Action = abort
+ErrorClass.7.Save = 0
+ErrorClass.7.WarningLimit = 3 5
+ErrorClass.10.Action = abort
+ErrorClass.10.Save = 0
+ErrorClass.10.WarningLimit = 3 5
+ErrorClass.11.Action = abort
+ErrorClass.11.Save = 0
+ErrorClass.11.WarningLimit = 3 5
+Road.FName = Roads ACC/ProVe_ACC_ligne_droite.rd5
+Road.VhclStartPos.Kind = Route
+Road.VhclStartPos = $Long_Offset=1205 0 0
+Road.VhclRoute = Route_0
+Env.StartTime.Year = 2014
+Env.StartTime.Month = 1
+Env.StartTime.Day = 1
+Env.StartTime.Hour = 12
+Env.StartTime.Min = 0
+Env.StartTime.Sec = 0
+Env.StartTime.DeltaUTC = 0.0
+Env.GNav.Active = 0
+Env.Temperature = 20.0
+Env.AirDensity = 1.205
+Env.AirPressure = 1.013
+Env.AirHumidity = 60
+Env.SolarRadiation = 400.0
+Env.RainRate = 0.0
+Env.VisRangeInFog = 10000
+Env.Wind.Kind = none
+Env.Wind.Velocity = 0.0
+Env.Wind.Angle = 0.0
+Env.Sun.Position = angleDefinition
+Env.Sun.Azimuth = 45.0
+Env.Sun.Elevation = 45.0
+Env.Kind = Generic
+Env.Temp.Offset_Elev = -0.0065
+Env.Temp.Offset_sRoad.Amplify = 1.0
+Env.Temp.Offset_sRoad.On = 0
+Env.Temp.Offset_Time.Amplify = 1.0
+Env.Temp.Offset_Time.On = 1
+Env.Temp.Offset_Time:
+	0.0 -2.0
+	3.0 -2.5
+	6.0 -2.7
+	7.5 -2.7
+	9.0 -2.5
+	10.0 -2.3
+	11.0 -1.6
+	12.0 0.0
+	13.0 1.4
+	14.0 2.1
+	15.5 2.5
+	17.0 2.2
+	18.0 1.7
+	19.0 1.1
+	20.0 0.2
+	21.0 -0.6
+	22.0 -1.1
+	23.0 -1.6
+	24.0 -2.0
+Driver.ParamIdent = IPGDriver 5
+Driver.Mode = std
+Driver.Long.DrivMaxSpeed = 0
+Driver.Long.CruisingSpeed = 150
+Driver.CornerCutCoef = 0.5
+Driver.ConsiderTraffic = 0
+Driver.Traffic.TimeGapMin = 1.8
+Driver.Traffic.TimeGapMax = 5.0
+Driver.Traffic.DistMin = 6
+Driver.Traffic.DistMax = 250
+Driver.Traffic.EcoCoef = 0.75
+Driver.Traffic.Overtake = 0
+Driver.Traffic.Overtake_Rate = 1
+Driver.Traffic.Overtake_dSpeedMin = 10
+Driver.Long.dtAccBrake = 0.5
+Driver.Long.axMax = 3.0
+Driver.Long.axMin = -4.0
+Driver.Long.ayMax = 4.0
+Driver.Long.GGExp:
+	50 1.0 1.0
+Driver.Long.DevMax = 0.0
+Driver.Long.tReact = 0.0
+Driver.Long.TractionControl = 1
+Driver.DecShift.UseBrakePark = 0
+Driver.DecShift.tSwitchGear = 1.0
+Driver.DecShift.nEngine.Limits:
+	1500 4000
+Driver.DecShift.nEngine.Shift:
+	2000 3000
+Driver.Lat.DevMax = 0.0
+Driver.Lat.tReact = 0.0
+Driver.Knowl.Long.tActionMin = 4
+Driver.Knowl.Lat.StWhlAngleMax = 630
+Driver.Knowl.Lat.StWhlAngleVelMax = 500
+Driver.Knowl.Lat.StWhlAngleAccMax = 3000
+Driver.Learn.VehicleLimits.TestRun =
+Driver.Learn.VehicleLimits.Date = 0
+Driver.Learn.ControllerDyn.TestRun =
+Driver.Learn.ControllerDyn.Date = 0
+Driver.Learn.MaxSpeed.TestRun =
+Driver.Learn.MaxSpeed.Date = 0
+Driver.Learn.Remember = 0
+Driver.Learn.Friction = 1.0
+Driver.Knowl.Long.tPreviewBra = 0.6
+Driver.Knowl.Long.tPreviewAcc = 1.5
+Driver.Knowl.Lat.tPreview = 0.8
+Driver.Learn.NEng_S = 1
+Driver.Consider.SpeedLimit = 1
+Driver.Consider.StopMarker = 1
+Driver.Consider.TrfLight = 1
+
